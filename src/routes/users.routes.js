@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.get('/', authenticate, authorize(['admin']), UserController.getAll);
 router.get('/me', authenticate, authorize([]), UserController.getMe);
+router.patch('/me', authenticate, authorize([]), UserController.updateMe);
 
 export default router;

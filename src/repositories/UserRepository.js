@@ -25,6 +25,13 @@ class UserRepository {
   async getAll() {
     return User.find().populate('roles').exec();
   }
+
+  async updateById(id, userData) {
+    return User.findByIdAndUpdate(id, userData, {
+      new: true,
+      runValidators: true
+    }).populate('roles').exec();
+  }
 }
 
 export default new UserRepository();

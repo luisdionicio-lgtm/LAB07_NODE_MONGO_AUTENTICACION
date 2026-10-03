@@ -4,7 +4,7 @@ import userRepository from '../repositories/UserRepository.js';
 import roleRepository from '../repositories/RoleRepository.js';
 
 class AuthService {
-  async signUp({ email, password, name, roles = ['user'] }) {
+  async signUp({ email, password, name, lastName, phoneNumber, birthdate, url_profile = '', address = '', roles = ['user'] }) {
     const existing = await userRepository.findByEmail(email);
     if (existing) {
       const err = new Error('El email ya se encuentra en uso');
@@ -28,13 +28,20 @@ class AuthService {
       email,
       password: hashed,
       name,
+      lastName,
+      phoneNumber,
+      birthdate,
+      url_profile,
+      address,
       roles: roleDocs
     });
 
     return {
       id: user._id,
       email: user.email,
-      name: user.name
+      name: user.name,
+      lastName: user.lastName,
+      roles
     };
   }
 
