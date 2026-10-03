@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Avatar sin fotografia">
+  <rect width="200" height="200" fill="#20241d"/>
+  <circle cx="100" cy="74" r="38" fill="#7e846f"/>
+  <path d="M35 190c4-47 28-74 65-74s61 27 65 74" fill="#7e846f"/>
+  <path d="M20 20h42M20 20v42M180 20h-42M180 20v42M20 180h42M20 180v-42M180 180h-42M180 180v-42" fill="none" stroke="#d19a54" stroke-width="4"/>
+</svg>
