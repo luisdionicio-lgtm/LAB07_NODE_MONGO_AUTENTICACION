@@ -4,14 +4,20 @@ import roleRepository from '../repositories/RoleRepository.js';
 
 export default async function seedUsers() {
   const email = process.env.ADMIN_EMAIL || 'admin@terminus.local';
+  const password = process.env.ADMIN_PASSWORD || 'Admin#2026';
+  const saltRounds = Number.parseInt(process.env.BCRYPT_SALT_ROUNDS ?? '10', 10);
   const existing = await userRepository.findByEmail(email);
-  if (existing) return;
+  if (existing) {
+    const passwordMatches = await bcrypt.compare(password, existing.password);
+    if (!passwordMatches) {
+      await userRepository.updatePassword(existing._id, await bcrypt.hash(password, saltRounds));
+      console.log(`Admin credentials synchronized: ${email}`);
+    }
+    return;
+  }
 
   const adminRole = await roleRepository.findByName('admin');
   const userRole = await roleRepository.findByName('user');
-  const saltRounds = Number.parseInt(process.env.BCRYPT_SALT_ROUNDS ?? '10', 10);
-  const password = process.env.ADMIN_PASSWORD || 'Admin#2026';
-
   await userRepository.create({
     email,
     password: await bcrypt.hash(password, saltRounds),
