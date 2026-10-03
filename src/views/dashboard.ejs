@@ -1,0 +1,24 @@
+<%- include('partials/head', { title }) %>
+<body class="app-page">
+  <%- include('partials/navbar') %>
+  <main class="app-main protected-page" data-roles="user,admin">
+    <section class="hero-strip">
+      <div>
+        <p class="status-line"><span></span> Identidad confirmada</p>
+        <h1>Bienvenido, <span id="welcome-name">superviviente</span></h1>
+        <p>Tu acceso esta activo. Revisa la informacion que mantiene segura tu cuenta.</p>
+      </div>
+      <div class="survival-index"><span>Nivel de acceso</span><strong id="access-level">USER</strong></div>
+    </section>
+    <section class="content-grid">
+      <article class="profile-summary panel-card">
+        <div class="avatar-shell"><img id="avatar" src="/images/avatar-placeholder.svg" alt="Foto de perfil"></div>
+        <div><span class="card-kicker">Expediente personal</span><h2 id="full-name">Cargando...</h2><p id="email-value"></p></div>
+        <a class="btn-flat text-action" href="/profile">Editar cuenta <i class="material-icons right">edit</i></a>
+      </article>
+      <article class="panel-card info-card"><i class="material-icons">cake</i><span>Edad calculada</span><strong id="age-value">--</strong></article>
+      <article class="panel-card info-card"><i class="material-icons">phone</i><span>Canal de contacto</span><strong id="phone-value">--</strong></article>
+      <article class="panel-card info-card"><i class="material-icons">place</i><span>Ubicacion registrada</span><strong id="address-value">Sin registrar</strong></article>
+    </section>
+  </main>
+  <% const pageScript = 'dashboard'; %><%- include('partials/scripts', { pageScript }) %>

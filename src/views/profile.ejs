@@ -1,0 +1,21 @@
+<%- include('partials/head', { title }) %>
+<body class="app-page">
+  <%- include('partials/navbar') %>
+  <main class="app-main protected-page" data-roles="user,admin">
+    <section class="page-heading"><div><p class="status-line"><span></span> Expediente personal</p><h1>Mi cuenta</h1><p>Actualiza la informacion que usaremos para identificarte.</p></div></section>
+    <section class="profile-editor">
+      <aside class="profile-portrait"><div class="avatar-shell large"><img id="profile-avatar" src="/images/avatar-placeholder.svg" alt="Foto de perfil"></div><h2 id="profile-name">Cargando...</h2><p id="profile-role"></p><span>La edad se calcula automaticamente desde la fecha de nacimiento.</span></aside>
+      <form id="profile-form" class="profile-form" novalidate>
+        <div class="input-field"><input id="name" name="name" type="text" required><label class="active" for="name">Nombres</label></div>
+        <div class="input-field"><input id="lastName" name="lastName" type="text" required><label class="active" for="lastName">Apellidos</label></div>
+        <div class="input-field"><input id="phoneNumber" name="phoneNumber" type="tel" required><label class="active" for="phoneNumber">Telefono</label></div>
+        <div class="input-field"><input id="birthdate" name="birthdate" type="date" required><label class="active" for="birthdate">Fecha de nacimiento</label></div>
+        <div class="input-field full"><input id="url_profile" name="url_profile" type="url"><label class="active" for="url_profile">URL de foto de perfil</label></div>
+        <div class="input-field full"><input id="address" name="address" type="text"><label class="active" for="address">Direccion</label></div>
+        <div class="readonly-field full"><span>Correo electronico</span><strong id="profile-email">--</strong></div>
+        <div id="form-error" class="form-message full" role="alert" aria-live="polite"></div>
+        <button class="btn-large action-btn waves-effect waves-light full" type="submit">Guardar cambios <i class="material-icons right">save</i></button>
+      </form>
+    </section>
+  </main>
+  <% const pageScript = 'profile'; %><%- include('partials/scripts', { pageScript }) %>

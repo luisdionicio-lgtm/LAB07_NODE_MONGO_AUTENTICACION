@@ -1,0 +1,34 @@
+<%- include('partials/head', { title }) %>
+<body class="auth-page signup-page">
+  <main class="auth-stage">
+    <section class="auth-panel signup-panel" aria-labelledby="signup-title">
+      <a class="signal-mark" href="/signIn"><span class="signal-pulse"></span><span>Dead Signal</span></a>
+      <div class="auth-copy compact">
+        <p class="status-line"><span></span> Registro de supervivientes</p>
+        <h1 id="signup-title">Solicita acceso</h1>
+        <p>Crea tu identificacion para entrar a la comunidad.</p>
+      </div>
+      <form id="signup-form" class="auth-form signup-grid" novalidate>
+        <div class="input-field"><input id="name" name="name" type="text" required><label for="name">Nombres</label></div>
+        <div class="input-field"><input id="lastName" name="lastName" type="text" required><label for="lastName">Apellidos</label></div>
+        <div class="input-field"><input id="phoneNumber" name="phoneNumber" type="tel" required><label for="phoneNumber">Telefono</label></div>
+        <div class="input-field"><input id="birthdate" name="birthdate" type="date" required><label class="active" for="birthdate">Fecha de nacimiento</label></div>
+        <div class="input-field full"><input id="email" name="email" type="email" autocomplete="email" required><label for="email">Correo electronico</label></div>
+        <div class="input-field full password-field">
+          <input id="password" name="password" type="password" autocomplete="new-password" required>
+          <label for="password">Contrasena segura</label>
+          <button type="button" class="password-toggle" data-toggle-password="password" aria-label="Mostrar contrasena"><i class="material-icons">visibility</i></button>
+        </div>
+        <p class="password-hint full">Minimo 8 caracteres, una mayuscula, un numero y un simbolo # $ % & * @</p>
+        <div id="form-error" class="form-message full" role="alert" aria-live="polite"></div>
+        <button class="btn-large action-btn waves-effect waves-light full" type="submit">Crear cuenta <i class="material-icons right">person_add</i></button>
+      </form>
+      <p class="auth-switch">¿Ya tienes acceso? <a href="/signIn">Iniciar sesion</a></p>
+    </section>
+    <aside class="world-caption"><p>Protocolo de ingreso</p><strong>Cada persona cuenta.</strong><span>La edad se calcula desde tu fecha de nacimiento; nunca se almacena directamente.</span></aside>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/signup.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<%- include('partials/head', { title }) %>
+<body class="auth-page">
+  <main class="auth-stage">
+    <section class="auth-panel" aria-labelledby="signin-title">
+      <a class="signal-mark" href="/signIn" aria-label="Dead Signal inicio">
+        <span class="signal-pulse"></span>
+        <span>Dead Signal</span>
+      </a>
+      <div class="auth-copy">
+        <p class="status-line"><span></span> Transmision protegida</p>
+        <h1 id="signin-title">Regresa al refugio</h1>
+        <p>Tu cuenta conserva el acceso a la comunidad y a los registros de supervivencia.</p>
+      </div>
+      <form id="signin-form" class="auth-form" novalidate>
+        <div class="input-field">
+          <i class="material-icons prefix">alternate_email</i>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+          <label for="email">Correo electronico</label>
+        </div>
+        <div class="input-field password-field">
+          <i class="material-icons prefix">lock_outline</i>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+          <label for="password">Contrasena</label>
+          <button type="button" class="password-toggle" data-toggle-password="password" aria-label="Mostrar contrasena"><i class="material-icons">visibility</i></button>
+        </div>
+        <div id="form-error" class="form-message" role="alert" aria-live="polite"></div>
+        <button class="btn-large action-btn waves-effect waves-light" type="submit">
+          Entrar a la zona segura <i class="material-icons right">east</i>
+        </button>
+      </form>
+      <p class="auth-switch">¿Aun no estas registrado? <a href="/signUp">Crear una cuenta</a></p>
+      <div class="demo-access">
+        <span>Acceso de practica</span>
+        <button class="btn-flat" id="demo-admin" type="button">Usar cuenta admin</button>
+      </div>
+    </section>
+    <aside class="world-caption" aria-label="Estado de la comunidad">
+      <p>Zona 07</p>
+      <strong>La senal sigue activa.</strong>
+      <span>Autentica tu identidad para continuar.</span>
+    </aside>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/signin.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<%- include('partials/head', { title }) %>
+<body class="app-page">
+  <%- include('partials/navbar') %>
+  <main class="app-main protected-page" data-roles="admin">
+    <section class="page-heading">
+      <div><p class="status-line"><span></span> Acceso de administrador</p><h1>Centro de mando</h1><p>Control de identidades registradas en la comunidad.</p></div>
+      <div class="metric"><strong id="user-count">0</strong><span>cuentas activas</span></div>
+    </section>
+    <section class="table-panel">
+      <div class="table-toolbar"><h2>Registro de usuarios</h2><div class="input-field search-field"><i class="material-icons prefix">search</i><input id="user-search" type="search" placeholder="Buscar por nombre o correo"></div></div>
+      <div class="responsive-table-wrap">
+        <table class="highlight responsive-table">
+          <thead><tr><th>Usuario</th><th>Contacto</th><th>Edad</th><th>Registro</th><th>Rol</th><th></th></tr></thead>
+          <tbody id="users-table"><tr><td colspan="6" class="loading-row">Cargando registros...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <div id="user-modal" class="modal modal-sheet"><div class="modal-content" id="user-modal-content"></div><div class="modal-footer"><button class="modal-close btn-flat">Cerrar</button></div></div>
+  <% const pageScript = 'admin'; %><%- include('partials/scripts', { pageScript }) %>
