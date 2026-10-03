@@ -9,6 +9,11 @@ class AuthController {
       if (missing.length > 0) {
         return res.status(400).json({ message: `Campos requeridos: ${missing.join(', ')}` });
       }
+      if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[#$%&*@]).{8,}$/.test(payload.password)) {
+        return res.status(400).json({
+          message: 'La contrasena debe tener 8 caracteres, una mayuscula, un numero y un simbolo (# $ % & * @)'
+        });
+      }
 
       const user = await authService.signUp(payload);
       return res.status(201).json(user);

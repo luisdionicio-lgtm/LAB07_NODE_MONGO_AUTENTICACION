@@ -4,7 +4,7 @@ import userRepository from '../repositories/UserRepository.js';
 import roleRepository from '../repositories/RoleRepository.js';
 
 class AuthService {
-  async signUp({ email, password, name, lastName, phoneNumber, birthdate, url_profile = '', address = '', roles = ['user'] }) {
+  async signUp({ email, password, name, lastName, phoneNumber, birthdate, url_profile = '', address = '' }) {
     const existing = await userRepository.findByEmail(email);
     if (existing) {
       const err = new Error('El email ya se encuentra en uso');
@@ -15,6 +15,7 @@ class AuthService {
     const saltRounds = Number.parseInt(process.env.BCRYPT_SALT_ROUNDS ?? '10', 10);
     const hashed = await bcrypt.hash(password, saltRounds);
 
+    const roles = ['user'];
     const roleDocs = [];
     for (const roleName of roles) {
       let roleDoc = await roleRepository.findByName(roleName);
