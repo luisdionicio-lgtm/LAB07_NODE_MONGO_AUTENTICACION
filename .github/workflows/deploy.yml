@@ -1,0 +1,56 @@
+name: CI/CD - JWT Render
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Instalar y probar API
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v6
+      - name: Configurar Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Ejecutar pruebas
+        run: npm test
+
+  deploy:
+    name: Desplegar en Render
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Activar Deploy Hook del commit validado
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "Falta el secret RENDER_DEPLOY_HOOK_URL"
+            exit 1
+          fi
+          curl --fail --silent --show-error --max-time 60 \
+            --request POST "${RENDER_DEPLOY_HOOK_URL}&ref=${COMMIT_SHA}" \
+            --output deploy-response.json
+          echo "Render acepto el despliegue del commit ${COMMIT_SHA}" >> "$GITHUB_STEP_SUMMARY"
+          cat deploy-response.json
+
