@@ -1,50 +1,30 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
+import 'dotenv/config';
 import mongoose from 'mongoose';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import authRoutes from './routes/auth.routes.js';
-import userRoutes from './routes/users.routes.js';
-import webRoutes from './routes/web.routes.js';
+import app from './app.js';
 import seedRoles from './utils/seedRoles.js';
 import seedUsers from './utils/seedUsers.js';
 
-dotenv.config();
-
-const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, '..', 'public')));
-
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.get('/health', (req, res) => res.status(200).json({ ok: true }));
-app.use(webRoutes);
-
-app.use((req, res) => res.status(404).render('404', { title: 'Pagina no encontrada' }));
-
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(err.status || 500).json({ message: err.message || 'Error interno del servidor' });
-});
-
 const PORT = process.env.PORT || 3000;
-
-mongoose.connect(process.env.MONGODB_URI, { autoIndex: true })
-  .then(async () => {
-    console.log('Mongo connected');
-    await seedRoles();
-    await seedUsers();
-    app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
-  })
-  .catch((err) => {
-    console.error('Error al conectar con Mongo:', err);
-    process.exit(1);
+try {
+  if (!process.env.MONGODB_URI || !process.env.JWT_SECRET) {
+    throw new Error('Configurar MONGODB_URI y JWT_SECRET');
+  }
+  if (process.env.NODE_ENV === 'production' &&
+      (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD || process.env.JWT_SECRET.length < 32)) {
+    throw new Error('Configurar credenciales administrativas y JWT_SECRET de al menos 32 caracteres');
+  }
+  await mongoose.connect(process.env.MONGODB_URI, { autoIndex: true, serverSelectionTimeoutMS: 15000 });
+  console.log('MongoDB Atlas conectado');
+  await seedRoles();
+  await seedUsers();
+  const server = app.listen(PORT, '0.0.0.0', () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+  server.on('error', async (err) => {
+    console.error('No se pudo iniciar el servidor:', err.code);
+    await mongoose.disconnect();
+    process.exitCode = 1;
   });
+} catch (err) {
+  console.error('Error al iniciar:', err.name);
+  await mongoose.disconnect();
+  process.exitCode = 1;
+}

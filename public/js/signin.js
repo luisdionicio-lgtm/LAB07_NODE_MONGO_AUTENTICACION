@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (params.has('registered')) { error.textContent = 'Cuenta creada. Inicia sesion para continuar.'; error.classList.add('success'); }
   if (params.has('expired')) error.textContent = 'La sesion vencio. Ingresa nuevamente.';
 
-  document.getElementById('demo-admin').addEventListener('click', () => {
+  document.getElementById('demo-admin')?.addEventListener('click', () => {
     form.email.value = 'admin@terminus.local';
     form.password.value = 'Admin#2026';
     M.updateTextFields();

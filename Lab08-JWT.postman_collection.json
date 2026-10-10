@@ -1,0 +1,130 @@
+{
+  "info": {
+    "name": "Lab08 - JWT en Render",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://express-auth-dionicio.onrender.com"
+    },
+    {
+      "key": "email",
+      "value": "luis.jwt08@example.com"
+    },
+    {
+      "key": "password",
+      "value": "Dionicio#2026"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1 Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "2 Registrar usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/auth/signUp",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Luis\",\n  \"lastName\": \"Dionicio\",\n  \"phoneNumber\": \"999888777\",\n  \"birthdate\": \"2000-01-01\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"address\": \"Lima, Peru\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "3 Iniciar sesion",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/auth/signIn",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Login correcto\", () => pm.response.to.have.status(200));",
+              "if (pm.response.code === 200) pm.collectionVariables.set(\"token\", pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 Mi perfil con JWT",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/users/me",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "5 Perfil sin JWT - 401",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/users/me"
+      }
+    },
+    {
+      "name": "6 Listar como usuario normal - 403",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/users",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

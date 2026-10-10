@@ -29,10 +29,12 @@
         </button>
       </form>
       <p class="auth-switch">¿Aun no estas registrado? <a href="/signUp">Crear una cuenta</a></p>
+      <% if (showDemoAccess) { %>
       <div class="demo-access">
         <span>Acceso de practica</span>
         <button class="btn-flat" id="demo-admin" type="button">Usar cuenta admin</button>
       </div>
+      <% } %>
     </section>
     <aside class="world-caption" aria-label="Estado de la comunidad">
       <p>Zona 07</p>

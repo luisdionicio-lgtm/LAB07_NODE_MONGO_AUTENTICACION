@@ -1,4 +1,9 @@
 node_modules/
 .env
+.env.*
+!.env.example
+!.env.production.example
+ACCESO-RENDER.txt
+evidencias/
 npm-debug.log*
 *.log
